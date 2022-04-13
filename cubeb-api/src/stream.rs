@@ -68,7 +68,7 @@ use std::slice::{from_raw_parts, from_raw_parts_mut};
 use std::{ops, panic, ptr};
 use {ContextRef, DeviceId, Error, Result, State, StreamParamsRef};
 
-pub type DataCallback<F> = dyn FnMut(&[F], &mut [F]) -> isize + Send + Sync + 'static;
+pub type DataCallback<F> = dyn FnMut(&[F], &mut [F]) -> isize + Send + 'static;
 pub type StateCallback = dyn FnMut(State) + Send + Sync + 'static;
 pub type DeviceChangedCallback = dyn FnMut() + Send + Sync + 'static;
 
@@ -119,7 +119,7 @@ impl<'a, F> StreamBuilder<'a, F> {
 
     pub fn data_callback<D>(&mut self, cb: D) -> &mut Self
     where
-        D: FnMut(&[F], &mut [F]) -> isize + Send + Sync + 'static,
+        D: FnMut(&[F], &mut [F]) -> isize + Send + 'static,
     {
         self.data_cb = Some(Box::new(cb) as Box<DataCallback<F>>);
         self
